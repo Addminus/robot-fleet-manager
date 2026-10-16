@@ -1,14 +1,21 @@
 import { Card } from "@/components/card";
 import { AttentionSummary } from "@/components/fleet/attention-summary";
+import { FleetComposition } from "@/components/fleet/fleet-composition";
 import type { AttentionCounts } from "@/lib/client/helpers/get-attention-summary";
+import type { OperationalStateCounts } from "@/lib/client/helpers/get-fleet-composition";
 import type { SimulatedRobot } from "@/lib/types/robot";
 
 type FleetViewProps = {
   fleet: SimulatedRobot[];
   attentionSummary: AttentionCounts;
+  composition: OperationalStateCounts;
 };
 
-export const FleetView = ({ fleet, attentionSummary }: FleetViewProps) => {
+export const FleetView = ({
+  fleet,
+  attentionSummary,
+  composition,
+}: FleetViewProps) => {
   return (
     <div className="flex flex-col gap-5">
       <div className="flex gap-2">
@@ -19,7 +26,7 @@ export const FleetView = ({ fleet, attentionSummary }: FleetViewProps) => {
         </span>
         <span className="flex-2">
           <Card title="Fleet composition" subtitle={`${fleet.length} robots`}>
-            Composition display of fleet
+            <FleetComposition composition={composition} />
           </Card>
         </span>
       </div>
