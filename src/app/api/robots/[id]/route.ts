@@ -7,8 +7,10 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
-
   const robot = getRobotById(id);
+  if (!robot) {
+    return Response.json({ error: "Robot not found" }, { status: 404 });
+  }
   return Response.json({
     robot,
   });
