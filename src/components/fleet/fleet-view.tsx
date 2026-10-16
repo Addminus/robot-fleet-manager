@@ -2,6 +2,7 @@ import { Card } from "@/components/card";
 import { AttentionSummary } from "@/components/fleet/attention-summary";
 import { AttentionTable } from "@/components/fleet/attention-table";
 import { FleetComposition } from "@/components/fleet/fleet-composition";
+import { FleetTable } from "@/components/fleet/fleet-table";
 import type { AttentionCounts } from "@/lib/client/helpers/get-attention-summary";
 import type { RobotStatusCounts } from "@/lib/client/helpers/get-fleet-composition";
 import type { RobotNeedingAttention } from "@/lib/client/helpers/get-robots-needing-attention";
@@ -13,6 +14,7 @@ type FleetViewProps = {
   attentionSummary: AttentionCounts;
   composition: RobotStatusCounts;
   robotsNeedingAttention: RobotNeedingAttention[];
+  robotsByLastSeen: SimulatedRobot[];
 };
 
 export const FleetView = ({
@@ -21,6 +23,7 @@ export const FleetView = ({
   attentionSummary,
   composition,
   robotsNeedingAttention,
+  robotsByLastSeen,
 }: FleetViewProps) => {
   return (
     <div className="flex flex-col gap-5">
@@ -47,7 +50,9 @@ export const FleetView = ({
       </div>
 
       <div>
-        <Card title="All robots">Table of all Robots</Card>
+        <Card title="All robots">
+          <FleetTable robots={robotsByLastSeen} now={now} />
+        </Card>
       </div>
     </div>
   );
