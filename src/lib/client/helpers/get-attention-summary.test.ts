@@ -1,29 +1,12 @@
 import { describe, expect, it } from "vitest";
 import {
+  makeRobot,
+  TEST_NOW as now,
+} from "@/lib/client/helpers/__fixtures__/robot";
+import {
   getAttentionSummary,
   STALE_THRESHOLD_MS,
 } from "@/lib/client/helpers/get-attention-summary";
-import type { RobotTelemetry, SimulatedRobot } from "@/lib/types/robot";
-
-const now = 1_000_000;
-
-const makeRobot = (
-  number: number,
-  telemetry: Partial<RobotTelemetry> = {},
-): SimulatedRobot => {
-  const id = `test-vendor:${number}` as const;
-  return {
-    robot: { id, displayName: `Test ${number}`, vendorId: "test-vendor" },
-    telemetry: {
-      robotId: id,
-      observedAt: now,
-      batteryPercent: 80,
-      operationalState: "working",
-      ...telemetry,
-    },
-    batteryDrainPerSecond: 1,
-  };
-};
 
 describe("getAttentionSummary", () => {
   it("counts error, flat and lost robots and ignores healthy ones", () => {
