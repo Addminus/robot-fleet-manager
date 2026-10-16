@@ -14,7 +14,7 @@ export const FleetContainer = () => {
       fleet={fleet}
       now={fleetUpdatedAt}
       attentionSummary={getAttentionSummary(fleet, fleetUpdatedAt)}
-      composition={getFleetComposition(fleet)}
+      composition={getFleetComposition(fleet, fleetUpdatedAt)}
       robotsNeedingAttention={getRobotsNeedingAttention(fleet, fleetUpdatedAt)}
     />
   );
