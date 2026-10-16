@@ -2,8 +2,8 @@
 
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Topbar } from "@/components/top-bar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Topbar } from "@/components/top-bar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
