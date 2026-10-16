@@ -1,14 +1,21 @@
-export type RobotId = `${string}:${string}` // Note: expecting to use combination of vendor id and robot number here
+export type RobotId = `${string}:${string}`; // Note: expecting to use combination of vendor id and robot number here
 
 export type Robot = {
-    id: RobotId
-    displayName: string
-    vendorId: string
-}
+  id: RobotId;
+  displayName: string;
+  vendorId: string;
+};
 
 export interface RobotTelemetry {
-    robotId: RobotId
-    observedAt: number
-    batteryPercent: number
-    operationalState: 'idle' | 'working' | 'charging' | 'error'  
+  robotId: RobotId;
+  observedAt: number;
+  batteryPercent: number;
+  operationalState: "idle" | "working" | "charging" | "error";
+}
+
+// Helper type to be able to store current state of robot
+export interface SimulatedRobot {
+  robot: Robot;
+  telemetry: RobotTelemetry;
+  batteryDrainPerSecond: number;
 }
