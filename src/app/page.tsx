@@ -1,6 +1,6 @@
 import { Card } from "@/components/card";
 
-export default function Home() {
+export default function FleetView() {
   return (
     <div className="flex flex-col gap-5">
       <div className="flex gap-2">
