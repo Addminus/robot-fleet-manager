@@ -1,4 +1,5 @@
 import { createInitialFleet } from "@/lib/server/robot-factory";
+import type { SimulatedRobot } from "@/lib/types/robot";
 
 const createFleet = () => {
   return createInitialFleet(Date.now());
@@ -12,4 +13,12 @@ const globalScope = globalThis as unknown as {
 export function getFleet() {
   globalScope.fleet ??= createFleet();
   return globalScope.fleet;
+}
+
+export function getRobotById(robotId: string) {
+  globalScope.fleet ??= createFleet();
+  const fleetByRobotId = new Map<string, SimulatedRobot>(
+    globalScope.fleet.map((simulated) => [simulated.robot.id, simulated]),
+  );
+  return fleetByRobotId.get(robotId);
 }
