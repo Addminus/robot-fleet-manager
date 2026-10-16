@@ -1,5 +1,5 @@
-import { FleetView } from "@/lib/client/views/fleet-view";
+import { FleetContainer } from "@/lib/client/containers/fleet-container";
 
 export default function FleetPage() {
-  return <FleetView />;
+  return <FleetContainer />;
 }
