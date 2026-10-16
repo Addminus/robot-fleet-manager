@@ -14,14 +14,15 @@ export const fetchFleet = async (): Promise<SimulatedRobot[]> => {
 };
 
 export const useFleet = () => {
-  const { data: fleet, isPending } = useQuery({
+  const { data, dataUpdatedAt, isPending } = useQuery({
     queryKey: ["fleet"],
-    initialData: [],
     queryFn: fetchFleet,
   });
 
   return {
-    fleet,
+    fleet: data ?? [],
+    // Note: Timestamp of the last successful fetch, used as reference point for telemetry staleness
+    fleetUpdatedAt: dataUpdatedAt,
     fleetRequestIsPending: isPending,
   };
 };
