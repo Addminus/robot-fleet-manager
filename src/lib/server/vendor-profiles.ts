@@ -1,6 +1,6 @@
 import type { Vendor } from "@/lib/types/vendor";
 
-type VendorProfile = Vendor & { robotCount: number };
+export type VendorProfile = Vendor & { robotCount: number };
 
 export const vendorProfiles: VendorProfile[] = [
   {

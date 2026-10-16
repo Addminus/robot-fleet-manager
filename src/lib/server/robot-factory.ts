@@ -1,13 +1,19 @@
+import {
+  type VendorProfile,
+  vendorProfiles,
+} from "@/lib/server/vendor-profiles";
 import type {
-  SimulatedRobot,
-  RobotTelemetry,
   RobotId,
+  RobotTelemetry,
+  SimulatedRobot,
 } from "@/lib/types/robot";
-import { vendorProfiles } from "@/lib/server/vendor-profiles";
 
-export function createInitialFleet(now: number): SimulatedRobot[] {
+export function createInitialFleet(
+  now: number,
+  profiles: VendorProfile[] = vendorProfiles,
+): SimulatedRobot[] {
   const fleet = [];
-  for (const vendor of vendorProfiles) {
+  for (const vendor of profiles) {
     for (let index = 1; index <= vendor.robotCount; index += 1) {
       const robotNumber = String(index).padStart(2, "0");
       const id: RobotId = `${vendor.id}:${robotNumber}`;
