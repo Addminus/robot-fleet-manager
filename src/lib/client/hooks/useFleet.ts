@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import type { SimulatedRobot } from "@/lib/types/robot";
 
+const FLEET_POLL_INTERVAL_MS = 10_000;
+
 export const fetchFleet = async (): Promise<SimulatedRobot[]> => {
   const result = await fetch("/api/robots");
   // Note: fetch only rejects on network failures, so HTTP errors have to be thrown manually for the query to fail
@@ -17,6 +19,7 @@ export const useFleet = () => {
   const { data, dataUpdatedAt, isPending } = useQuery({
     queryKey: ["fleet"],
     queryFn: fetchFleet,
+    refetchInterval: FLEET_POLL_INTERVAL_MS,
   });
 
   return {
