@@ -1,7 +1,10 @@
-import { getAttentionReason } from "@/lib/client/helpers/get-attention-reason";
-import type { OperationalState, SimulatedRobot } from "@/lib/types/robot";
+import {
+  getRobotHealth,
+  type HealthyState,
+} from "@/lib/client/helpers/get-robot-health";
+import type { SimulatedRobot } from "@/lib/types/robot";
 
-export type RobotStatus = Exclude<OperationalState, "error"> | "attention";
+export type RobotStatus = HealthyState | "attention";
 
 export type RobotStatusCounts = Record<RobotStatus, number>;
 
@@ -16,14 +19,11 @@ export function getFleetComposition(
     attention: 0,
   };
   for (const { telemetry } of fleet) {
-    // Note: getAttentionReason already covers error; the explicit check lets TypeScript narrow the state below
-    if (
-      telemetry.operationalState === "error" ||
-      getAttentionReason(telemetry, now)
-    ) {
-      composition.attention += 1;
+    const health = getRobotHealth(telemetry, now);
+    if (health.status === "healthy") {
+      composition[health.state] += 1;
     } else {
-      composition[telemetry.operationalState] += 1;
+      composition.attention += 1;
     }
   }
   return composition;

@@ -3,8 +3,8 @@ import {
   makeRobot,
   TEST_NOW as now,
 } from "@/lib/client/helpers/__fixtures__/robot";
-import { STALE_THRESHOLD_MS } from "@/lib/client/helpers/get-attention-reason";
 import { getAttentionSummary } from "@/lib/client/helpers/get-attention-summary";
+import { STALE_THRESHOLD_MS } from "@/lib/client/helpers/get-robot-health";
 
 describe("getAttentionSummary", () => {
   it("counts error, flat and lost robots and ignores healthy ones", () => {

@@ -1,7 +1,7 @@
 import {
   type AttentionReason,
-  getAttentionReason,
-} from "@/lib/client/helpers/get-attention-reason";
+  getRobotHealth,
+} from "@/lib/client/helpers/get-robot-health";
 import type { SimulatedRobot } from "@/lib/types/robot";
 
 export type RobotNeedingAttention = {
@@ -18,8 +18,10 @@ export function getRobotsNeedingAttention(
 ): RobotNeedingAttention[] {
   const robotsNeedingAttention: RobotNeedingAttention[] = [];
   for (const robot of fleet) {
-    const reason = getAttentionReason(robot.telemetry, now);
-    if (reason) robotsNeedingAttention.push({ robot, reason });
+    const health = getRobotHealth(robot.telemetry, now);
+    if (health.status === "needs-attention") {
+      robotsNeedingAttention.push({ robot, reason: health.reason });
+    }
   }
 
   return robotsNeedingAttention.sort(

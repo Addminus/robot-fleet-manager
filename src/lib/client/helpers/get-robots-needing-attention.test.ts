@@ -3,7 +3,7 @@ import {
   makeRobot,
   TEST_NOW as now,
 } from "@/lib/client/helpers/__fixtures__/robot";
-import { STALE_THRESHOLD_MS } from "@/lib/client/helpers/get-attention-reason";
+import { STALE_THRESHOLD_MS } from "@/lib/client/helpers/get-robot-health";
 import { getRobotsNeedingAttention } from "@/lib/client/helpers/get-robots-needing-attention";
 
 describe("getRobotsNeedingAttention", () => {

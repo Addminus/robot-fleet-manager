@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { formatLastSeen } from "@/components/fleet/format-last-seen";
-import type { AttentionReason } from "@/lib/client/helpers/get-attention-reason";
+import type { AttentionReason } from "@/lib/client/helpers/get-robot-health";
 import type { RobotNeedingAttention } from "@/lib/client/helpers/get-robots-needing-attention";
 
 type AttentionTableProps = {
