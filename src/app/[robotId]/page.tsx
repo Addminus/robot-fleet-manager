@@ -1,4 +1,9 @@
+import type { Metadata } from "next";
 import { Card } from "@/components/card";
+
+export const metadata: Metadata = {
+  title: "Fleet | Detail",
+};
 
 type RobotDetailProps = {
   params: Promise<{ robotId: string }>;
