@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Card } from "@/components/card";
+import { APP_NAME } from "@/lib/client/config";
 
 export const metadata: Metadata = {
-  title: "Fleet | Detail",
+  title: `${APP_NAME} | Detail`,
 };
 
 type RobotDetailProps = {

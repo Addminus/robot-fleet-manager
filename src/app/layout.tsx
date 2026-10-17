@@ -1,9 +1,9 @@
-"use client";
-
+import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Topbar } from "@/components/top-bar";
+import { APP_NAME } from "@/lib/client/config";
+import { Providers } from "@/lib/client/providers/providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,7 +15,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const queryClient = new QueryClient();
+export const metadata: Metadata = {
+  title: `${APP_NAME}`,
+  description: "Monitor the state of a mixed-vendor robot fleet",
+};
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -26,9 +29,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col bg-zinc-50 text-zinc-900">
         <Topbar />
         <main className="p-7 mx-auto w-full max-w-[1860px]">
-          <QueryClientProvider client={queryClient}>
-            {children}
-          </QueryClientProvider>
+          <Providers>{children}</Providers>
         </main>
       </body>
     </html>
