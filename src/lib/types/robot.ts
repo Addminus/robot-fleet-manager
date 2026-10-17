@@ -6,11 +6,13 @@ export type Robot = {
   vendorId: string;
 };
 
+export type OperationalState = "idle" | "working" | "charging" | "error";
+
 export interface RobotTelemetry {
   robotId: RobotId;
   observedAt: number;
   batteryPercent: number;
-  operationalState: "idle" | "working" | "charging" | "error";
+  operationalState: OperationalState;
 }
 
 // Helper type to be able to store current state of robot

@@ -1,29 +1,11 @@
-import { Card } from "@/components/card";
+import type { Metadata } from "next";
+import { APP_NAME } from "@/lib/client/config";
+import { FleetContainer } from "@/lib/client/containers/fleet-container";
 
-export default function FleetView() {
-  return (
-    <div className="flex flex-col gap-5">
-      <div className="flex gap-2">
-        <Card title="Errors">Number of faulty robots</Card>
-        <span className="flex-2">
-          <Card title="Fleet composition" subtitle="13 out of 15 reporting">
-            Composition display of fleet
-          </Card>
-        </span>
-      </div>
+export const metadata: Metadata = {
+  title: `${APP_NAME} | Overview`,
+};
 
-      <div>
-        <Card
-          title="Needs attention"
-          subtitle="State the system can not resolve on its own"
-        >
-          Table of robots in need of attention
-        </Card>
-      </div>
-
-      <div>
-        <Card title="All robots">Table of all Robots</Card>
-      </div>
-    </div>
-  );
+export default function FleetPage() {
+  return <FleetContainer />;
 }
