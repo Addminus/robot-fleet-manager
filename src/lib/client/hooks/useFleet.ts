@@ -16,10 +16,12 @@ export const fetchFleet = async (): Promise<SimulatedRobot[]> => {
 };
 
 export const useFleet = () => {
-  const { data, dataUpdatedAt, isPending } = useQuery({
+  const { data, dataUpdatedAt, isPending, isError } = useQuery({
     queryKey: ["fleet"],
     queryFn: fetchFleet,
     refetchInterval: FLEET_POLL_INTERVAL_MS,
+    // Note: This escalates the error to the next js error boundary.
+    throwOnError: (_error, query) => query.state.data === undefined,
   });
 
   return {
@@ -27,5 +29,6 @@ export const useFleet = () => {
     // Note: Timestamp of the last successful fetch, used as reference point for telemetry staleness
     fleetUpdatedAt: dataUpdatedAt,
     fleetRequestIsPending: isPending,
+    fleetRefreshFailed: isError,
   };
 };

@@ -11,6 +11,7 @@ import type { SimulatedRobot } from "@/lib/types/robot";
 type FleetViewProps = {
   fleet: SimulatedRobot[];
   now: number;
+  refreshFailed: boolean;
   attentionSummary: AttentionCounts;
   composition: RobotStatusCounts;
   robotsNeedingAttention: RobotNeedingAttention[];
@@ -20,6 +21,7 @@ type FleetViewProps = {
 export const FleetView = ({
   fleet,
   now,
+  refreshFailed,
   attentionSummary,
   composition,
   robotsNeedingAttention,
@@ -27,6 +29,11 @@ export const FleetView = ({
 }: FleetViewProps) => {
   return (
     <div className="flex flex-col gap-5">
+      {refreshFailed && (
+        <p className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-2 text-[13px] text-amber-800">
+          Couldn't refresh fleet data. Showing the last successful update.
+        </p>
+      )}
       <div className="flex gap-2">
         <span className="flex-1">
           <Card title="Needs attention">

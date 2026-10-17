@@ -1,5 +1,6 @@
 "use client";
 
+import { FleetLoading } from "@/components/fleet/fleet-loading";
 import { FleetView } from "@/components/fleet/fleet-view";
 import { getAttentionSummary } from "@/lib/client/helpers/get-attention-summary";
 import { getFleetComposition } from "@/lib/client/helpers/get-fleet-composition";
@@ -8,12 +9,16 @@ import { getRobotsNeedingAttention } from "@/lib/client/helpers/get-robots-needi
 import { useFleet } from "@/lib/client/hooks/useFleet";
 
 export const FleetContainer = () => {
-  const { fleet, fleetUpdatedAt } = useFleet();
+  const { fleet, fleetUpdatedAt, fleetRequestIsPending, fleetRefreshFailed } =
+    useFleet();
+
+  if (fleetRequestIsPending) return <FleetLoading />;
 
   return (
     <FleetView
       fleet={fleet}
       now={fleetUpdatedAt}
+      refreshFailed={fleetRefreshFailed}
       attentionSummary={getAttentionSummary(fleet, fleetUpdatedAt)}
       composition={getFleetComposition(fleet, fleetUpdatedAt)}
       robotsNeedingAttention={getRobotsNeedingAttention(fleet, fleetUpdatedAt)}
