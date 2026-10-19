@@ -1,6 +1,7 @@
 import { Card } from "@/components/card";
 import { OperationalState } from "@/components/robot/operational-state";
 import type { SimulatedRobot } from "@/lib/types/robot";
+import { RobotIdentity } from "./robot-identity";
 
 type RobotViewProps = {
   robot: SimulatedRobot;
@@ -39,7 +40,9 @@ export const RobotView = ({ robot, lastUpdate }: RobotViewProps) => {
       <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[1fr_320px]">
         <Card title="Event History">List of last events</Card>
         <div className="flex flex-col gap-4">
-          <Card title="Identity">Robot details</Card>
+          <Card title="Identity">
+            <RobotIdentity robot={robot.robot} />
+          </Card>
           <Card title="Developer controls">
             Controls to change the state of the robot
           </Card>
