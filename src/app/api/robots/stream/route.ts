@@ -8,7 +8,7 @@ const encoder = new TextEncoder();
 
 export async function GET() {
   let timer: ReturnType<typeof setInterval> | undefined;
-  // Note: Per connection, so every client gets each transition no matter who advanced the fleet
+  // Note: One record per open stream, i.e. per browser tab. Each client compares against what it last saw, so every client gets every new error
   const lastStateByRobotId = new Map<RobotId, OperationalState>();
 
   const stream = new ReadableStream<Uint8Array>({
