@@ -8,11 +8,22 @@ type RobotViewProps = {
   robot: Robot;
   telemetry: RobotTelemetry;
   lastUpdate: string;
+  liveUpdatesPaused: boolean;
 };
 
-export const RobotView = ({ robot, telemetry, lastUpdate }: RobotViewProps) => {
+export const RobotView = ({
+  robot,
+  telemetry,
+  lastUpdate,
+  liveUpdatesPaused,
+}: RobotViewProps) => {
   return (
     <div className="flex flex-col gap-5">
+      {liveUpdatesPaused && (
+        <p className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-2 text-[13px] text-amber-800">
+          Live updates paused. Reconnecting, the last update may be outdated.
+        </p>
+      )}
       <div className="flex flex-col items-start gap-2">
         <BackLink href="/" />
         <h1 className="font-bold text-2xl">{robot.id}</h1>

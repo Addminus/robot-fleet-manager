@@ -14,7 +14,7 @@ type RobotContainerProps = {
 
 export const RobotContainer = ({ id }: RobotContainerProps) => {
   const { robot, robotRequestIsPending } = useRobot(id);
-  const liveTelemetry = useLiveRobotTelemetry(id);
+  const { liveTelemetry, liveTelemetryIsConnected } = useLiveRobotTelemetry(id);
   const now = useClock(1000);
   if (robotRequestIsPending || !robot) return <RobotLoading />;
 
@@ -27,6 +27,7 @@ export const RobotContainer = ({ id }: RobotContainerProps) => {
       robot={robot.robot}
       telemetry={telemetry}
       lastUpdate={lastUpdate}
+      liveUpdatesPaused={!liveTelemetryIsConnected}
     />
   );
 };
