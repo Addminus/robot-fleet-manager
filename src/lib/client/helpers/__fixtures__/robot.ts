@@ -18,5 +18,8 @@ export const makeRobot = (
       ...telemetry,
     },
     batteryDrainPerSecond: 1,
+    workDurationInMilliseconds: 60_000,
+    idleDurationInMilliseconds: 30_000,
+    stateEndsAt: null,
   };
 };

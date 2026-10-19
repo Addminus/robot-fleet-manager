@@ -1,4 +1,4 @@
-import { getRobotById } from "@/lib/server/fleet-repository";
+import { getRobotById } from "@/lib/server/fleet-simulation-repository";
 
 export const dynamic = "force-dynamic"; // Note: This needs to be evaluated on every request
 

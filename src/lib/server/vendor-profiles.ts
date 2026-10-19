@@ -16,3 +16,7 @@ export const vendorProfiles: VendorProfile[] = [
     robotCount: 5,
   },
 ];
+
+export const vendorProfilesById = new Map(
+  vendorProfiles.map((vendor) => [vendor.id, vendor]),
+);

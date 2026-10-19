@@ -20,4 +20,7 @@ export interface SimulatedRobot {
   robot: Robot;
   telemetry: RobotTelemetry;
   batteryDrainPerSecond: number;
+  workDurationInMilliseconds: number;
+  idleDurationInMilliseconds: number;
+  stateEndsAt: number | null; // Note: null while charging or in error, as those have no fixed end
 }
