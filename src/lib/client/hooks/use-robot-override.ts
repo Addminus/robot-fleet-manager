@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import type { RobotId, RobotOverride, SimulatedRobot } from "@/lib/types/robot";
 
 const sendRobotOverride = async (
@@ -18,14 +18,16 @@ const sendRobotOverride = async (
 };
 
 export const useRobotOverride = (id: RobotId) => {
-  const queryClient = useQueryClient();
-  const { mutate, isPending, isError } = useMutation({
+  const { mutate, data, isPending, isError } = useMutation({
     mutationFn: (override: RobotOverride) => sendRobotOverride(id, override),
-    onSuccess: (robot) => queryClient.setQueryData(["robot", id], robot),
   });
 
   return {
     overrideRobot: mutate,
+    // Note: Telemetry is left out on purpose. It holds values the robot has not reported yet, the stream delivers them with the next report.
+    // The id check ignores a result left over from a previously viewed robot
+    overriddenIsReportingBroken:
+      data?.robot.id === id ? data.isReportingBroken : undefined,
     overrideIsPending: isPending,
     overrideFailed: isError,
   };

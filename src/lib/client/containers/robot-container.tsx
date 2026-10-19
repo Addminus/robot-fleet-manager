@@ -18,8 +18,12 @@ export const RobotContainer = ({ id }: RobotContainerProps) => {
   const { robot, robotRequestIsPending } = useRobot(id);
   const { liveTelemetry, liveTelemetryIsConnected } = useLiveRobotTelemetry(id);
   const now = useClock(1000);
-  const { overrideRobot, overrideIsPending, overrideFailed } =
-    useRobotOverride(id);
+  const {
+    overrideRobot,
+    overriddenIsReportingBroken,
+    overrideIsPending,
+    overrideFailed,
+  } = useRobotOverride(id);
   if (robotRequestIsPending || !robot) return <RobotLoading />;
 
   // Note: The initial request provides a snapshot until the stream delivers its first report
@@ -34,7 +38,7 @@ export const RobotContainer = ({ id }: RobotContainerProps) => {
       lastUpdate={lastUpdate}
       liveUpdatesPaused={!liveTelemetryIsConnected}
       jobStatus={jobStatus}
-      isReportingBroken={robot.isReportingBroken}
+      isReportingBroken={overriddenIsReportingBroken ?? robot.isReportingBroken}
       overrideIsPending={overrideIsPending}
       overrideFailed={overrideFailed}
       onOverride={overrideRobot}
