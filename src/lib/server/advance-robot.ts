@@ -3,7 +3,7 @@ import type { OperationalState, SimulatedRobot } from "@/lib/types/robot";
 const CHARGE_PERCENT_PER_SECOND = 2.5;
 const CHARGE_THRESHOLD_PERCENT = 20;
 const CHARGE_TARGET_PERCENT = 95;
-const ERROR_CHANCE_ON_WORK_START = 0.2;
+const ERROR_CHANCE_ON_WORK_START = 0.8;
 
 // Note: Robots are caught up lazily whenever they are read. Each step is one vendor report, so a robot
 // reports at its vendor's cadence no matter how often it is read, and no background timer is needed.

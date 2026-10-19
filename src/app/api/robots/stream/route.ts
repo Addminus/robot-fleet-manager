@@ -1,6 +1,6 @@
 import { STREAM_CHECK_INTERVAL_MS } from "@/lib/server/config";
 import { getFleet } from "@/lib/server/fleet-simulation-repository";
-import type { OperationalState } from "@/lib/types/robot";
+import type { OperationalState, RobotId } from "@/lib/types/robot";
 
 export const dynamic = "force-dynamic"; // Note: This needs to be evaluated on every request
 
@@ -9,7 +9,7 @@ const encoder = new TextEncoder();
 export async function GET() {
   let timer: ReturnType<typeof setInterval> | undefined;
   // Note: Per connection, so every client gets each transition no matter who advanced the fleet
-  const lastStateByRobotId = new Map<string, OperationalState>();
+  const lastStateByRobotId = new Map<RobotId, OperationalState>();
 
   const stream = new ReadableStream<Uint8Array>({
     start(controller) {

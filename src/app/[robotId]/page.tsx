@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 type RobotDetailProps = {
-  params: Promise<{ robotId: RobotId }>;
+  params: Promise<{ robotId: string }>;
 };
 
 export default async function RobotDetail({ params }: RobotDetailProps) {

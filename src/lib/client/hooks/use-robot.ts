@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import type { RobotId, SimulatedRobot } from "@/lib/types/robot";
 
-export const fetchRobot = async (id: string): Promise<SimulatedRobot> => {
+export const fetchRobot = async (id: RobotId): Promise<SimulatedRobot> => {
   const result = await fetch(`/api/robots/${id}`);
   if (!result.ok) {
     throw new Error(`Failed to load robot (${result.status})`);
