@@ -3,6 +3,7 @@
 import { formatLastSeen } from "@/components/fleet/format-last-seen";
 import { RobotLoading } from "@/components/robot/robot-loading";
 import { RobotView } from "@/components/robot/robot-view";
+import { getJobStatus } from "@/lib/client/helpers/get-job-status";
 import { useClock } from "@/lib/client/hooks/use-clock";
 import { useLiveRobotTelemetry } from "@/lib/client/hooks/use-live-robot-telemetry";
 import { useRobot } from "@/lib/client/hooks/use-robot";
@@ -21,6 +22,7 @@ export const RobotContainer = ({ id }: RobotContainerProps) => {
   // Note: The initial request provides a snapshot until the stream delivers its first report
   const telemetry = liveTelemetry ?? robot.telemetry;
   const lastUpdate = formatLastSeen(now - telemetry.observedAt);
+  const jobStatus = getJobStatus(telemetry, now);
 
   return (
     <RobotView
@@ -28,6 +30,7 @@ export const RobotContainer = ({ id }: RobotContainerProps) => {
       telemetry={telemetry}
       lastUpdate={lastUpdate}
       liveUpdatesPaused={!liveTelemetryIsConnected}
+      jobStatus={jobStatus}
     />
   );
 };

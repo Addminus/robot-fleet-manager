@@ -1,6 +1,8 @@
 import { BackLink } from "@/components/back-link";
 import { Card } from "@/components/card";
+import { JobStatus } from "@/components/robot/job-status";
 import { OperationalState } from "@/components/robot/operational-state";
+import type { JobStatus as JobStatusType } from "@/lib/client/helpers/get-job-status";
 import type { Robot, RobotTelemetry } from "@/lib/types/robot";
 import { RobotIdentity } from "./robot-identity";
 
@@ -9,6 +11,7 @@ type RobotViewProps = {
   telemetry: RobotTelemetry;
   lastUpdate: string;
   liveUpdatesPaused: boolean;
+  jobStatus: JobStatusType;
 };
 
 export const RobotView = ({
@@ -16,6 +19,7 @@ export const RobotView = ({
   telemetry,
   lastUpdate,
   liveUpdatesPaused,
+  jobStatus,
 }: RobotViewProps) => {
   return (
     <div className="flex flex-col gap-5">
@@ -51,7 +55,9 @@ export const RobotView = ({
       </div>
 
       <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[1fr_320px]">
-        <Card title="Event History">List of last events</Card>
+        <Card title="Job schedule">
+          <JobStatus status={jobStatus} />
+        </Card>
         <div className="flex flex-col gap-4">
           <Card title="Identity">
             <RobotIdentity robot={robot} />
