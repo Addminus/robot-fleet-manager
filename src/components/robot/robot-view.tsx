@@ -18,15 +18,8 @@ export const RobotView = ({ robot, lastUpdate }: RobotViewProps) => {
       </div>
       <div className="flex gap-2">
         <span className="flex-1">
-          <Card title="State">
+          <Card title="Last reported state">
             <OperationalState state={robot.telemetry.operationalState} />
-          </Card>
-        </span>
-        <span className="flex-1">
-          <Card title="Battery">
-            <span className="text-2xl font-semibold leading-none tracking-tight tabular-nums">
-              {Math.round(robot.telemetry.batteryPercent)}%
-            </span>
           </Card>
         </span>
         <span className="flex-1">
@@ -34,9 +27,13 @@ export const RobotView = ({ robot, lastUpdate }: RobotViewProps) => {
             <span className="font-mono text-2xl leading-none tracking-tight">
               {lastUpdate}
             </span>
-            <p className="mt-4 text-[13px] text-zinc-500">
-              counted in the browser
-            </p>
+          </Card>
+        </span>
+        <span className="flex-1">
+          <Card title="Battery">
+            <span className="text-2xl font-semibold leading-none tracking-tight tabular-nums">
+              {Math.round(robot.telemetry.batteryPercent)}%
+            </span>
           </Card>
         </span>
       </div>
