@@ -55,6 +55,8 @@ I didn't choose it for its rendering modes. For a real dashboard Next.js is prob
 - **The simulation is kept on `globalThis`,** so hot reload doesn't create a new fleet on every save.
 - **I put the client boundary high in the tree** (`lib/client/containers`), so the app behaves like a static client app. I'm aware Next still prerenders the shell.
 
+I am also not using an RSC to check for a robots existence before returning the robot detail page. This is handled on the client by classifying errors. 
+
 ### The backend and the simulation
 
 I don't consider the backend and the simulation part of the submission. They're in the code and free to look at, and they're where AI helped me most. The backend is a thin wrapper that exposes the simulation's data to the client. It's a **test fixture for the UI**, and a way to experience real streaming behavior. Its tests only cover what the UI directly depends on.

@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+import { HttpError } from "@/lib/client/http-error";
 import type { RobotId, RobotOverride, SimulatedRobot } from "@/lib/types/robot";
 
 const sendRobotOverride = async (
@@ -11,7 +12,10 @@ const sendRobotOverride = async (
     body: JSON.stringify(override),
   });
   if (!result.ok) {
-    throw new Error(`Failed to override robot (${result.status})`);
+    throw new HttpError(
+      `Failed to override robot (${result.status})`,
+      result.status,
+    );
   }
   const parsedResponse = (await result.json()) as { robot: SimulatedRobot };
   return parsedResponse.robot;
