@@ -12,8 +12,6 @@ export const useLiveRobotTelemetry = (id: RobotId) => {
     return () => source.close();
   }, [id]);
 
-  console.log(telemetry);
-
   // Note: Ignore telemetry left over from any previous robot until the new stream reports
   return telemetry?.robotId === id ? telemetry : undefined;
 };
