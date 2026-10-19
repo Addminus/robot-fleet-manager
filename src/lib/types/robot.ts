@@ -23,4 +23,10 @@ export interface SimulatedRobot {
   workDurationInMilliseconds: number;
   idleDurationInMilliseconds: number;
   stateEndsAt: number | null; // Note: null while charging or in error, as those have no fixed end
+  isReportingBroken: boolean; // Note: Developer control. The robot keeps running but sends no reports
 }
+
+// Note: Developer override of a simulated robot. observedAt is left out on purpose, it only moves with real reports
+export type RobotOverride = Partial<
+  Pick<RobotTelemetry, "operationalState" | "batteryPercent">
+> & { isReportingBroken?: boolean };

@@ -12,6 +12,8 @@ export function advanceRobot(
   updateIntervalInMilliseconds: number,
   now: number,
 ): void {
+  // Note: The robot keeps running offline. Once reporting is restored, the loop below replays the missed reports
+  if (simulated.isReportingBroken) return;
   while (simulated.telemetry.observedAt + updateIntervalInMilliseconds <= now) {
     // Note: A flat robot has no power to report, so it stays as it was last seen
     if (simulated.telemetry.batteryPercent <= 0) return;
@@ -67,7 +69,7 @@ function reportOnce(
 }
 
 // Note: Every state change goes through here so no path can forget to set the deadline
-function enterState(
+export function enterState(
   simulated: SimulatedRobot,
   next: OperationalState,
   at: number,
