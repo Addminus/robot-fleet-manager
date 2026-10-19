@@ -22,6 +22,7 @@ type JobChipProps = {
 const JobChip = ({ label, state }: JobChipProps) => {
   return (
     <span
+      aria-current={state === "active" ? "true" : undefined}
       className={`rounded-full border-2 px-6 py-2.5 text-lg font-semibold ${chipStyles[state]}`}
     >
       {label}
