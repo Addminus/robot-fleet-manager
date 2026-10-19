@@ -6,7 +6,7 @@ import { getAttentionSummary } from "@/lib/client/helpers/get-attention-summary"
 import { getFleetComposition } from "@/lib/client/helpers/get-fleet-composition";
 import { getRobotsByLastSeen } from "@/lib/client/helpers/get-robots-by-last-seen";
 import { getRobotsNeedingAttention } from "@/lib/client/helpers/get-robots-needing-attention";
-import { useFleet } from "@/lib/client/hooks/useFleet";
+import { useFleet } from "@/lib/client/hooks/use-fleet";
 
 export const FleetContainer = () => {
   const { fleet, fleetUpdatedAt, fleetRequestIsPending, fleetRefreshFailed } =
