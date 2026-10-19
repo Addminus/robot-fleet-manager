@@ -1,24 +1,46 @@
+import { advanceRobot } from "@/lib/server/advance-robot";
 import { createInitialFleet } from "@/lib/server/robot-factory";
+import { vendorProfilesById } from "@/lib/server/vendor-profiles";
 import type { SimulatedRobot } from "@/lib/types/robot";
 
-const createFleet = () => {
-  return createInitialFleet(Date.now());
+const createFleetSimulation = () => {
+  const fleet = createInitialFleet(Date.now());
+  const fleetByRobotId = new Map<string, SimulatedRobot>(
+    fleet.map((simulated) => [simulated.robot.id, simulated]),
+  );
+  return { fleet, fleetByRobotId };
 };
 
 // Attaching this to global scope so that Nextjs hot reload does not recreate the fleet on every change
 const globalScope = globalThis as unknown as {
-  fleet?: ReturnType<typeof createFleet>;
+  fleetSimulation?: ReturnType<typeof createFleetSimulation>;
+};
+
+const getFleetSimulation = () => {
+  globalScope.fleetSimulation ??= createFleetSimulation();
+  return globalScope.fleetSimulation;
+};
+
+// Note: Going via the vendor as only its profile knows the update interval.
+const advanceToNow = (simulated: SimulatedRobot, now: number) => {
+  const vendor = vendorProfilesById.get(simulated.robot.vendorId);
+  if (!vendor) return;
+  advanceRobot(simulated, vendor.updateIntervalInMilliseconds, now);
 };
 
 export function getFleet() {
-  globalScope.fleet ??= createFleet();
-  return globalScope.fleet;
+  const { fleet } = getFleetSimulation();
+  const now = Date.now();
+  for (const simulated of fleet) {
+    advanceToNow(simulated, now);
+  }
+  return fleet;
 }
 
 export function getRobotById(robotId: string) {
-  globalScope.fleet ??= createFleet();
-  const fleetByRobotId = new Map<string, SimulatedRobot>(
-    globalScope.fleet.map((simulated) => [simulated.robot.id, simulated]),
-  );
-  return fleetByRobotId.get(robotId);
+  const simulated = getFleetSimulation().fleetByRobotId.get(robotId);
+  if (simulated) {
+    advanceToNow(simulated, Date.now());
+  }
+  return simulated;
 }
