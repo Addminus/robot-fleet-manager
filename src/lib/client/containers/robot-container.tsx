@@ -7,6 +7,7 @@ import { getJobStatus } from "@/lib/client/helpers/get-job-status";
 import { useClock } from "@/lib/client/hooks/use-clock";
 import { useLiveRobotTelemetry } from "@/lib/client/hooks/use-live-robot-telemetry";
 import { useRobot } from "@/lib/client/hooks/use-robot";
+import { useRobotOverride } from "@/lib/client/hooks/use-robot-override";
 import type { RobotId } from "@/lib/types/robot";
 
 type RobotContainerProps = {
@@ -17,6 +18,8 @@ export const RobotContainer = ({ id }: RobotContainerProps) => {
   const { robot, robotRequestIsPending } = useRobot(id);
   const { liveTelemetry, liveTelemetryIsConnected } = useLiveRobotTelemetry(id);
   const now = useClock(1000);
+  const { overrideRobot, overrideIsPending, overrideFailed } =
+    useRobotOverride(id);
   if (robotRequestIsPending || !robot) return <RobotLoading />;
 
   // Note: The initial request provides a snapshot until the stream delivers its first report
@@ -31,6 +34,10 @@ export const RobotContainer = ({ id }: RobotContainerProps) => {
       lastUpdate={lastUpdate}
       liveUpdatesPaused={!liveTelemetryIsConnected}
       jobStatus={jobStatus}
+      isReportingBroken={robot.isReportingBroken}
+      overrideIsPending={overrideIsPending}
+      overrideFailed={overrideFailed}
+      onOverride={overrideRobot}
     />
   );
 };

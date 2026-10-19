@@ -1,11 +1,9 @@
+import { LOW_BATTERY_HINT_PERCENT } from "@/lib/client/config";
 import {
   type AttentionReason,
   getRobotHealth,
 } from "@/lib/client/helpers/get-robot-health";
 import type { RobotTelemetry } from "@/lib/types/robot";
-
-// Note: The simulation starts charging at 20 %, so a little above that is when a charge becomes imminent
-export const LOW_BATTERY_HINT_PERCENT = 30;
 
 export type JobChipState = "active" | "paused" | "inactive" | "disabled";
 
