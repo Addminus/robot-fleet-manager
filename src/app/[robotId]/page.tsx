@@ -13,6 +13,7 @@ type RobotDetailProps = {
 
 export default async function RobotDetail({ params }: RobotDetailProps) {
   const { robotId } = await params;
-
-  return <RobotContainer id={robotId} />;
+  const decodedRobotId = decodeURIComponent(robotId) as RobotId;
+  // Note: Route params arrive URL-encoded, so "vendor:01" comes in as "vendor%3A01"
+  return <RobotContainer id={decodedRobotId} />;
 }
