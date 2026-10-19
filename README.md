@@ -4,6 +4,8 @@ A monitoring dashboard for a fleet of service robots from two vendors: a triage 
 
 ## Running it
 
+Requires Node 20 or newer.
+
 ```bash
 pnpm install
 pnpm dev                 # http://localhost:3000
@@ -91,14 +93,14 @@ It answers "what needs me right now?". Problems come first; all robots follow, s
 
 Flat is a lost robot whose last report explains the silence. Without that report, a silent robot is simply lost. In the simulator this is expressed with the state "Charging" but having 0% battery.
 
-A draining battery ("battery is almost empty") isn't on the list. im assuming that a robot charges on its own, and listing problems that fix themselves teaches people to ignore the list. IMO, that's the one thing a triage list must never do. Error and flat are kept apart because they call for different actions.
+A draining battery ("battery is almost empty") isn't on the list. I'm assuming that a robot charges on its own, and listing problems that fix themselves teaches people to ignore the list. IMO, that's the one thing a triage list must never do. Error and flat are kept apart because they call for different actions.
 
 A new error anywhere in the fleet shows a **toast** on every page, linking to the robot.
 
 ### Robot detail page: inspection
 - **Live** state, battery and time since the last report.
-- **Current job:** Working ⇄ Idle, with "paused" while charging and greyed out with a "reason" (Reasoning is currently `there is an error`. A meaningful error message is not part of the simulation) when the robot is in error, flat or lost.
-- **Developer controls** to force the robot into each of these states on demand. This allows for quickly toggling through the states
+- **Current job:** Working ⇄ Idle, with "paused" while charging and greyed out with a "reason" (A meaningful error message is not part of the simulation) when the robot is in error, flat or lost.
+- **Developer controls** to force the robot into each of these states on demand. This allows for quickly toggling through the states.
 
 ## Tech stack
 
@@ -125,12 +127,12 @@ The few writes, the developer controls, go over an ordinary `PATCH` with status 
 
 So the choice of transport follows from what each view is for: triage needs a cheap overview plus urgent events, and inspection needs everything about one robot.
 
-### Determining when a robot is lost.
+### Determining when a robot is lost
 Whether a robot is *lost* depends on how much time has passed since its last report, and that time keeps passing after the last message arrives. If the server labelled robots "healthy" and the connection then dropped, the page would show a healthy fleet indefinitely: the connection that would carry the correction is the one that broke.
 
 So the server sends only observations: `observedAt`, battery and state. The browser derives health from those and the current time (`getRobotHealth`): error, flat, or lost after 20 s without a report. On the detail page a one-second clock re-evaluates this, so a robot that stops reporting is flagged by the page itself, with no message needed. A dropped connection is shown separately ("Live updates paused"), so a broken connection is never mistaken for a broken robot.
 
-This could arguably be seen as business logic that belongs on the server. With a second timestamp, `observedAt` (when the robot measured) and `receivedAt` (when the server got it), the server could classify the connection to the vendor and answer the question "is 1 robot down vs is the entire vendor down?" (see What I'd do next). But a client would still need to observe its own connection to the server. For the sake of this submission I lobbed all of this into the single `observedAt` variable. 
+This could arguably be seen as business logic that belongs on the server. With a second timestamp, `observedAt` (when the robot measured) and `receivedAt` (when the server got it), the server could classify the connection to the vendor and answer the question "is 1 robot down vs is the entire vendor down?" (see What I'd do next). But a client would still need to observe its own connection to the server. For the sake of this submission I lumped all of this into the single `observedAt` variable. 
 
 ## Deliberate omissions
 
@@ -170,4 +172,14 @@ This could arguably be seen as business logic that belongs on the server. With a
 5. **Authentication and authorization,** deliberately left out here as stated earlier.
 6. **Observability.** Error tracking in the browser (e.g. Sentry), covering render errors, failed requests and streams that drop or are refused. Structured logging and metrics on the server: open streams, reconnects, and the delay between a robot's report and its arrival. For a monitoring tool, knowing when the dashboard itself is wrong matters as much as knowing when a robot is.
 7. **UI tests on the DOM.** Component tests (Testing Library) for the presentational components, and end-to-end tests (Playwright) for the flows that matter most: an error reaching the toast, a robot turning lost, a dropped stream showing the banner. Visual regression tests would keep the status colors and states from drifting.
-8. **Automated checks.** Today lint, types and tests are run by hand. Pre-commit hooks (e.g. Lefthook, Husky) would run them, plus a production build, before every commit. Wether this also needs to happen on CI is debatable. 
+8. **Automated checks.** Today lint, types and tests are run by hand. Pre-commit hooks (e.g. Lefthook, Husky) would run them, plus a production build, before every commit. Whether this also needs to happen on CI is debatable. 
+
+## Use of AI
+
+The brief allows AI, and I think it's fair to say where I used it:
+- **Research:** reading up on the domain and on trade-offs such as SSE versus WebSockets.
+- **This README:** structuring and formatting it. The reasoning and decisions are mine.
+- **The simulation:** generating parts of the simulation code to save time. As stated above, in my opinion the backend and simulation are a fixture for the UI, not the focus of this submission.
+- **Parts of the UI display elements:** help implementing some of the display elements in order to save time. To my design and structure. I'm happy to go through the details in the discussion.
+
+Every change was reviewed by me before it was committed, and I can explain any decision in the code.
