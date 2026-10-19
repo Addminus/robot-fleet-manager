@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatLastSeen } from "@/components/fleet/format-last-seen";
+import { formatLastSeen } from "@/lib/client/format-last-seen";
 import type { AttentionReason } from "@/lib/client/helpers/get-robot-health";
 import type { RobotNeedingAttention } from "@/lib/client/helpers/get-robots-needing-attention";
 

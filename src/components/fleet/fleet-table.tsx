@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatLastSeen } from "@/components/fleet/format-last-seen";
+import { formatLastSeen } from "@/lib/client/format-last-seen";
 import type { SimulatedRobot } from "@/lib/types/robot";
 
 type FleetTableProps = {

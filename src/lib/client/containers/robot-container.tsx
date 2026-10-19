@@ -1,8 +1,8 @@
 "use client";
 
-import { formatLastSeen } from "@/components/fleet/format-last-seen";
 import { RobotLoading } from "@/components/robot/robot-loading";
 import { RobotView } from "@/components/robot/robot-view";
+import { formatLastSeen } from "@/lib/client/format-last-seen";
 import { getJobStatus } from "@/lib/client/helpers/get-job-status";
 import { getRobotHealth } from "@/lib/client/helpers/get-robot-health";
 import { useClock } from "@/lib/client/hooks/use-clock";
