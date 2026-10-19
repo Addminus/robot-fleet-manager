@@ -11,6 +11,7 @@ type RobotViewProps = {
   robot: Robot;
   telemetry: RobotTelemetry;
   lastUpdate: string;
+  isLost: boolean;
   liveUpdatesPaused: boolean;
   jobStatus: JobStatusType;
   isReportingBroken: boolean;
@@ -23,6 +24,7 @@ export const RobotView = ({
   robot,
   telemetry,
   lastUpdate,
+  isLost,
   liveUpdatesPaused,
   jobStatus,
   isReportingBroken,
@@ -48,8 +50,16 @@ export const RobotView = ({
           </Card>
         </span>
         <span className="flex-1">
-          <Card title="Last Update">
-            <span className="font-mono text-2xl leading-none tracking-tight">
+          <Card
+            title="Last Update"
+            subtitle={
+              isLost && <span className="text-red-700">Signal lost</span>
+            }
+            tone={isLost ? "error" : "default"}
+          >
+            <span
+              className={`font-mono text-2xl leading-none tracking-tight ${isLost ? "text-red-700" : ""}`}
+            >
               {lastUpdate}
             </span>
           </Card>

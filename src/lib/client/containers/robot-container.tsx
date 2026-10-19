@@ -4,6 +4,7 @@ import { formatLastSeen } from "@/components/fleet/format-last-seen";
 import { RobotLoading } from "@/components/robot/robot-loading";
 import { RobotView } from "@/components/robot/robot-view";
 import { getJobStatus } from "@/lib/client/helpers/get-job-status";
+import { getRobotHealth } from "@/lib/client/helpers/get-robot-health";
 import { useClock } from "@/lib/client/hooks/use-clock";
 import { useLiveRobotTelemetry } from "@/lib/client/hooks/use-live-robot-telemetry";
 import { useRobot } from "@/lib/client/hooks/use-robot";
@@ -30,12 +31,14 @@ export const RobotContainer = ({ id }: RobotContainerProps) => {
   const telemetry = liveTelemetry ?? robot.telemetry;
   const lastUpdate = formatLastSeen(now - telemetry.observedAt);
   const jobStatus = getJobStatus(telemetry, now);
+  const health = getRobotHealth(telemetry, now);
 
   return (
     <RobotView
       robot={robot.robot}
       telemetry={telemetry}
       lastUpdate={lastUpdate}
+      isLost={health.status === "needs-attention" && health.reason === "lost"}
       liveUpdatesPaused={!liveTelemetryIsConnected}
       jobStatus={jobStatus}
       isReportingBroken={overriddenIsReportingBroken ?? robot.isReportingBroken}
