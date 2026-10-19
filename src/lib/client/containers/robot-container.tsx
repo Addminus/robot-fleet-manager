@@ -11,10 +11,10 @@ type RobotContainerProps = {
 };
 
 export const RobotContainer = ({ id }: RobotContainerProps) => {
-  const { robot, robotRequestIsPending, robotUpdatedAt } = useRobot(id);
-  const lastUpdate = formatLastSeen(Date.now() - robotUpdatedAt);
-
+  const { robot, robotRequestIsPending } = useRobot(id);
   if (robotRequestIsPending || !robot) return <RobotLoading />;
+
+  const lastUpdate = formatLastSeen(Date.now() - robot?.telemetry.observedAt);
 
   return <RobotView robot={robot} lastUpdate={lastUpdate} />;
 };

@@ -15,7 +15,7 @@ export const fetchRobot = async (id: string): Promise<SimulatedRobot> => {
 };
 
 export const useRobot = (id: RobotId) => {
-  const { data, isPending, isError, dataUpdatedAt } = useQuery({
+  const { data, isPending, isError } = useQuery({
     queryKey: ["robot", id],
     queryFn: () => fetchRobot(id),
     refetchInterval: ROBOT_POLL_INTERVAL_MS,
@@ -26,7 +26,6 @@ export const useRobot = (id: RobotId) => {
   return {
     robot: data,
     robotRequestIsPending: isPending,
-    robotUpdatedAt: dataUpdatedAt, // Note: used for the robots last seen display. needs to be merged with the telemetry live feed
     robotRefreshFailed: isError,
   };
 };
