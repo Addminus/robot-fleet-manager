@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Topbar } from "@/components/top-bar";
 import { APP_NAME } from "@/lib/client/config";
+import { FleetErrorToastContainer } from "@/lib/client/containers/fleet-error-toast-container";
 import { Providers } from "@/lib/client/providers/providers";
 
 const geistSans = Geist({
@@ -29,7 +30,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col bg-zinc-50 text-zinc-900">
         <Topbar />
         <main className="p-7 mx-auto w-full max-w-[1860px]">
-          <Providers>{children}</Providers>
+          <Providers>
+            {children}
+            <FleetErrorToastContainer />
+          </Providers>
         </main>
       </body>
     </html>
