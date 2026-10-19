@@ -17,6 +17,7 @@ const makeSimulatedRobot = (
   workDurationInMilliseconds: 60_000,
   idleDurationInMilliseconds: 30_000,
   stateEndsAt: 60_000,
+  isReportingBroken: false,
 });
 
 // Note: The UI derives staleness from observedAt, so reading a robot must never make it look fresher than its vendor reports
@@ -35,5 +36,17 @@ describe("advanceRobot", () => {
     advanceRobot(simulated, 2000, 60_000);
 
     expect(simulated.telemetry.observedAt).toBe(0);
+  });
+
+  it("sends no reports while reporting is broken, then catches up once restored", () => {
+    const simulated = makeSimulatedRobot({});
+    simulated.isReportingBroken = true;
+
+    advanceRobot(simulated, 2000, 30_000);
+    expect(simulated.telemetry.observedAt).toBe(0);
+
+    simulated.isReportingBroken = false;
+    advanceRobot(simulated, 2000, 30_000);
+    expect(simulated.telemetry.observedAt).toBe(30_000);
   });
 });

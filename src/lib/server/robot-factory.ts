@@ -40,6 +40,7 @@ export function createInitialFleet(
         batteryDrainPerSecond: randomBetween(0.5, 0.7),
         workDurationInMilliseconds,
         idleDurationInMilliseconds,
+        isReportingBroken: false,
         // Note: Start partway through the current block so robots don't switch state in lockstep
         stateEndsAt:
           operationalState === "working"

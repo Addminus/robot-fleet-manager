@@ -1,9 +1,10 @@
 import { BackLink } from "@/components/back-link";
 import { Card } from "@/components/card";
+import { DeveloperControls } from "@/components/robot/developer-controls";
 import { JobStatus } from "@/components/robot/job-status";
 import { OperationalState } from "@/components/robot/operational-state";
 import type { JobStatus as JobStatusType } from "@/lib/client/helpers/get-job-status";
-import type { Robot, RobotTelemetry } from "@/lib/types/robot";
+import type { Robot, RobotOverride, RobotTelemetry } from "@/lib/types/robot";
 import { RobotIdentity } from "./robot-identity";
 
 type RobotViewProps = {
@@ -12,6 +13,10 @@ type RobotViewProps = {
   lastUpdate: string;
   liveUpdatesPaused: boolean;
   jobStatus: JobStatusType;
+  isReportingBroken: boolean;
+  overrideIsPending: boolean;
+  overrideFailed: boolean;
+  onOverride: (override: RobotOverride) => void;
 };
 
 export const RobotView = ({
@@ -20,6 +25,10 @@ export const RobotView = ({
   lastUpdate,
   liveUpdatesPaused,
   jobStatus,
+  isReportingBroken,
+  overrideIsPending,
+  overrideFailed,
+  onOverride,
 }: RobotViewProps) => {
   return (
     <div className="flex flex-col gap-5">
@@ -63,7 +72,12 @@ export const RobotView = ({
             <RobotIdentity robot={robot} />
           </Card>
           <Card title="Developer controls">
-            Controls to change the state of the robot
+            <DeveloperControls
+              isReportingBroken={isReportingBroken}
+              isPending={overrideIsPending}
+              failed={overrideFailed}
+              onOverride={onOverride}
+            />
           </Card>
         </div>
       </div>
