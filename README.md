@@ -140,6 +140,7 @@ This could arguably be seen as business logic that belongs on the server. With a
 
 - **Authentication.** Nothing here is authenticated, and everything is simulated. The brief describes a fleet manager looking at robots, not users, accounts or tenants. I doubt that a login form with an in-memory user store would have demonstrated anything useful.
 - **Robot position and a site map.** A nice later addition, but triage doesn't need coordinates, and the detail view had more useful things to show.
+- **Small screens.** The layout isn't responsive: on a phone or a narrow window, the stat cards and tables don't adapt.
 - **A command path.** Olivaw works on upskilling robots with AI, which needs a way to send commands to them. Robots come from different vendors, so a command isn't request/response: it travels from browser to backend to vendor API to robot. A vendor can accept it while the robot never receives it (battery, deprecated signal). Doing that properly means tracking the request lifecycle. The developer controls are a test tool, not that path.
 - **Telemetry history and charts.** These are backend business logic, which I didn't want to focus on in this time frame.
 - **UI tests that check the DOM.** To save time I didn't write component or browser tests. Instead the client follows a container/presentational split: containers (`lib/client/containers`) derive every value from pure helpers, and the components only render what they're given. The helpers are unit-tested: health, attention, fleet composition and job status. So the logic deciding what the page shows is covered, but its rendering, the streaming hooks and the user flows are not.
@@ -175,6 +176,7 @@ This could arguably be seen as business logic that belongs on the server. With a
 6. **Observability.** Error tracking in the browser (e.g. Sentry), covering render errors, failed requests and streams that drop or are refused. Structured logging and metrics on the server: open streams, reconnects, and the delay between a robot's report and its arrival. For a monitoring tool, knowing when the dashboard itself is wrong matters as much as knowing when a robot is.
 7. **UI tests on the DOM.** Component tests (Testing Library) for the presentational components, and end-to-end tests (Playwright) for the flows that matter most: an error reaching the toast, a robot turning lost, a dropped stream showing the banner. Visual regression tests would keep the status colors and states from drifting.
 8. **Automated checks.** Today lint, types and tests are run by hand. Pre-commit hooks (e.g. Lefthook, Husky) would run them, plus a production build, before every commit. Whether this also needs to happen on CI is debatable. 
+9. **A responsive layout.** Breakpoints for the stat cards and tables, so the dashboard also works on a tablet or phone. That's how a manager away from their desk would see an alert.
 
 ## Use of AI
 
