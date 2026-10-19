@@ -3,10 +3,12 @@ import {
   vendorProfiles,
 } from "@/lib/server/vendor-profiles";
 import type {
+  OperationalState,
   RobotId,
-  RobotTelemetry,
   SimulatedRobot,
 } from "@/lib/types/robot";
+
+const FLAT_CHANCE = 0.03;
 
 export function createInitialFleet(
   now: number,
@@ -17,6 +19,9 @@ export function createInitialFleet(
     for (let index = 1; index <= vendor.robotCount; index += 1) {
       const robotNumber = String(index).padStart(2, "0");
       const id: RobotId = `${vendor.id}:${robotNumber}`;
+      const operationalState = pickRandomInitialState();
+      const workDurationInMilliseconds = randomBetween(60_000, 180_000);
+      const idleDurationInMilliseconds = randomBetween(15_000, 60_000);
       fleet.push({
         robot: {
           id,
@@ -29,10 +34,19 @@ export function createInitialFleet(
           observedAt:
             now -
             Math.floor(Math.random() * vendor.updateIntervalInMilliseconds),
-          batteryPercent: 40 + Math.random() * 60,
-          operationalState: pickRandomInitialState(),
+          batteryPercent: pickInitialBattery(operationalState),
+          operationalState,
         },
-        batteryDrainPerSecond: 0.47 + Math.random() * 0.95,
+        batteryDrainPerSecond: randomBetween(0.5, 0.7),
+        workDurationInMilliseconds,
+        idleDurationInMilliseconds,
+        // Note: Start partway through the current block so robots don't switch state in lockstep
+        stateEndsAt:
+          operationalState === "working"
+            ? now + Math.random() * workDurationInMilliseconds
+            : operationalState === "idle"
+              ? now + Math.random() * idleDurationInMilliseconds
+              : null,
       });
     }
   }
@@ -40,10 +54,20 @@ export function createInitialFleet(
   return fleet;
 }
 
-function pickRandomInitialState(): RobotTelemetry["operationalState"] {
+function pickRandomInitialState(): OperationalState {
   const roll = Math.random();
   if (roll < 0.65) return "working";
   if (roll < 0.85) return "idle";
   if (roll < 0.97) return "charging";
   return "error";
+}
+
+function pickInitialBattery(operationalState: OperationalState): number {
+  if (Math.random() < FLAT_CHANCE) return 0;
+  if (operationalState === "charging") return randomBetween(5, 20);
+  return randomBetween(40, 100);
+}
+
+function randomBetween(minimum: number, maximum: number): number {
+  return minimum + Math.random() * (maximum - minimum);
 }
