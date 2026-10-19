@@ -1,9 +1,7 @@
+import { STREAM_CHECK_INTERVAL_MS } from "@/lib/server/config";
 import { getRobotById } from "@/lib/server/fleet-simulation-repository";
 
 export const dynamic = "force-dynamic"; // Note: This needs to be evaluated on every request
-
-// Note: Sits in line with update interval mentioned in the challenge. Matches the fastest vendor cadence. Reports are only sent when observedAt moved, so slower vendors are not resent
-const CHECK_INTERVAL_MS = 1000;
 
 const encoder = new TextEncoder();
 
@@ -30,7 +28,7 @@ export async function GET(
         );
       };
       sendLatestTelemetry();
-      timer = setInterval(sendLatestTelemetry, CHECK_INTERVAL_MS);
+      timer = setInterval(sendLatestTelemetry, STREAM_CHECK_INTERVAL_MS);
     },
     cancel() {
       clearInterval(timer);
