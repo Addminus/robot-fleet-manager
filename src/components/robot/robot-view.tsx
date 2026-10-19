@@ -1,3 +1,4 @@
+import { BackLink } from "@/components/back-link";
 import { Card } from "@/components/card";
 import { OperationalState } from "@/components/robot/operational-state";
 import type { SimulatedRobot } from "@/lib/types/robot";
@@ -11,7 +12,10 @@ type RobotViewProps = {
 export const RobotView = ({ robot, lastUpdate }: RobotViewProps) => {
   return (
     <div className="flex flex-col gap-5">
-      <h1 className="font-bold text-2xl">{robot.robot.id}</h1>
+      <div className="flex flex-col items-start gap-2">
+        <BackLink href="/" />
+        <h1 className="font-bold text-2xl">{robot.robot.id}</h1>
+      </div>
       <div className="flex gap-2">
         <span className="flex-1">
           <Card title="State">
