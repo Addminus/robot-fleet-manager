@@ -1,12 +1,9 @@
+import type { SimulatedRobot } from "@/lib/server/simulated-robot";
 import {
   type VendorProfile,
   vendorProfiles,
 } from "@/lib/server/vendor-profiles";
-import type {
-  OperationalState,
-  RobotId,
-  SimulatedRobot,
-} from "@/lib/types/robot";
+import type { OperationalState, RobotId } from "@/lib/types/robot";
 
 const FLAT_CHANCE = 0.03;
 
