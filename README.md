@@ -136,6 +136,9 @@ So the server sends only observations: `observedAt`, battery and state. The brow
 
 This could arguably be seen as business logic that belongs on the server. With a second timestamp, `observedAt` (when the robot measured) and `receivedAt` (when the server got it), the server could classify the connection to the vendor and answer the question "is 1 robot down vs is the entire vendor down?" (see What I'd do next). But a client would still need to observe its own connection to the server. For the sake of this submission I lumped all of this into the single `observedAt` variable. 
 
+### The client/server boundary
+The simulation's state (`SimulatedRobot`: drain rate, job durations, deadlines) never leaves the server. The routes map it to `RobotSnapshot`, which holds a robot's identity and its latest report, or to `RobotDetails`, which adds the developer-control flag the detail page needs.
+
 ## Deliberate omissions
 
 - **Authentication.** Nothing here is authenticated, and everything is simulated. The brief describes a fleet manager looking at robots, not users, accounts or tenants. I doubt that a login form with an in-memory user store would have demonstrated anything useful.
@@ -152,7 +155,6 @@ This could arguably be seen as business logic that belongs on the server. With a
 - **Missed error events aren't replayed.** If the fleet stream reconnects, errors that happened in the gap get no toast, though the next poll still shows them.
 - **Connection limit in development.** Over HTTP/1.1, which local development uses, browsers allow 6 connections per domain, and each detail tab holds 2 streams. HTTP/2 deployments aren't affected.
 - **The fleet lives in one server process's memory,** so several instances would each simulate a different fleet.
-- **The API returns the simulation's internal fields** next to the telemetry.
 
 ## What I'd do next
 
@@ -164,7 +166,6 @@ This could arguably be seen as business logic that belongs on the server. With a
    - **An event log in a small database:** every state change (error, charging, flat, gone quiet) stored with its time. That gives the detail page a real event history.
    - **More fleet events over the stream,** derived on the server from that log: empty batteries, robots going quiet. Then the fleet page's ages could count up between polls, too. Polling already gets 90 % of the way there very cheaply, which is why I stopped there.
    - **Replay of missed events:** with a log in place, event ids plus `Last-Event-ID` let a reconnect pick up where it stopped, so no notification is lost.
-4. **A separate API response type,** so the simulation's internals don't leak to the client.
 
 ### For production
 
