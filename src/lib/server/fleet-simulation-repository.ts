@@ -33,7 +33,7 @@ const advanceToNow = (simulated: SimulatedRobot, now: number) => {
 export const toRobotSnapshot = ({
   robot,
   telemetry,
-}: SimulatedRobot): RobotSnapshot => ({ robot, latestTelemetry: telemetry });
+}: SimulatedRobot): RobotSnapshot => ({ ...robot, latestTelemetry: telemetry });
 
 export function getFleet() {
   const { fleet } = getFleetSimulation();

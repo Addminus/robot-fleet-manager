@@ -35,7 +35,7 @@ export const RobotContainer = ({ id }: RobotContainerProps) => {
 
   return (
     <RobotView
-      robot={robot.robot}
+      robot={robot}
       telemetry={telemetry}
       lastUpdate={lastUpdate}
       isLost={health.status === "needs-attention" && health.reason === "lost"}

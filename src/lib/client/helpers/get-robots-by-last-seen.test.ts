@@ -13,12 +13,12 @@ describe("getRobotsByLastSeen", () => {
       makeRobot(3, { observedAt: now - 60_000 }),
     ];
 
-    expect(getRobotsByLastSeen(fleet).map(({ robot }) => robot.id)).toEqual([
+    expect(getRobotsByLastSeen(fleet).map(({ id }) => id)).toEqual([
       "test-vendor:2",
       "test-vendor:1",
       "test-vendor:3",
     ]);
-    expect(fleet.map(({ robot }) => robot.id)).toEqual([
+    expect(fleet.map(({ id }) => id)).toEqual([
       "test-vendor:1",
       "test-vendor:2",
       "test-vendor:3",

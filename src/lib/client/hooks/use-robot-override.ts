@@ -21,7 +21,12 @@ const sendRobotOverride = async (
 };
 
 export const useRobotOverride = (id: RobotId) => {
-  const { mutate, data, isPending, isError } = useMutation({
+  const {
+    mutate,
+    data: robot,
+    isPending,
+    isError,
+  } = useMutation({
     mutationFn: (override: RobotOverride) => sendRobotOverride(id, override),
   });
 
@@ -30,7 +35,7 @@ export const useRobotOverride = (id: RobotId) => {
     // Note: Telemetry is left out on purpose. It holds values the robot has not reported yet, the stream delivers them with the next report.
     // The id check ignores a result left over from a previously viewed robot
     overriddenIsReportingBroken:
-      data?.robot.id === id ? data.isReportingBroken : undefined,
+      robot?.id === id ? robot.isReportingBroken : undefined,
     overrideIsPending: isPending,
     overrideFailed: isError,
   };

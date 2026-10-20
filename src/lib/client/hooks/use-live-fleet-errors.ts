@@ -11,7 +11,7 @@ export const useLiveFleetErrors = () => {
     // Note: Patches new errors into the cached fleet so the attention views react instantly. Polling stays the source of truth
     queryClient.setQueryData<RobotSnapshot[]>(["fleet"], (fleet) =>
       fleet?.map((snapshot) =>
-        snapshot.robot.id === telemetry.robotId
+        snapshot.id === telemetry.robotId
           ? { ...snapshot, latestTelemetry: telemetry }
           : snapshot,
       ),

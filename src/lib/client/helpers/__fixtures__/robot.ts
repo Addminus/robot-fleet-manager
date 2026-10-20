@@ -9,7 +9,9 @@ export const makeRobot = (
 ): RobotSnapshot => {
   const id = `test-vendor:${number}` as const;
   return {
-    robot: { id, displayName: `Test ${number}`, vendorId: "test-vendor" },
+    id,
+    displayName: `Test ${number}`,
+    vendorId: "test-vendor",
     latestTelemetry: {
       robotId: id,
       observedAt: now,

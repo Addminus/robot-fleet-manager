@@ -16,10 +16,7 @@ export interface RobotTelemetry {
 }
 
 // Note: What the API sends per robot. The simulation state stays on the server
-export type RobotSnapshot = {
-  robot: Robot;
-  latestTelemetry: RobotTelemetry;
-};
+export type RobotSnapshot = Robot & { latestTelemetry: RobotTelemetry };
 
 // Note: What the robot detail endpoint sends. The developer controls also need to know whether reporting is broken
 export type RobotDetails = RobotSnapshot & { isReportingBroken: boolean };
