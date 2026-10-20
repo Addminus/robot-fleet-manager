@@ -4,7 +4,11 @@ import {
   toRobotSnapshot,
 } from "@/lib/server/fleet-simulation-repository";
 import type { SimulatedRobot } from "@/lib/server/simulated-robot";
-import type { OperationalState, RobotOverride } from "@/lib/types/robot";
+import type {
+  OperationalState,
+  RobotDetails,
+  RobotOverride,
+} from "@/lib/types/robot";
 
 export const dynamic = "force-dynamic"; // Note: This needs to be evaluated on every request
 
@@ -40,7 +44,7 @@ export async function PATCH(
 }
 
 // Note: The detail page also needs the developer control flag, the rest of the simulation state stays on the server
-const toRobotResponse = (simulated: SimulatedRobot) => ({
+const toRobotResponse = (simulated: SimulatedRobot): RobotDetails => ({
   ...toRobotSnapshot(simulated),
   isReportingBroken: simulated.isReportingBroken,
 });

@@ -1,7 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import type { RobotDetails } from "@/lib/client/hooks/use-robot";
 import { HttpError } from "@/lib/client/http-error";
-import type { RobotId, RobotOverride } from "@/lib/types/robot";
+import type { RobotDetails, RobotId, RobotOverride } from "@/lib/types/robot";
 
 const sendRobotOverride = async (
   id: RobotId,

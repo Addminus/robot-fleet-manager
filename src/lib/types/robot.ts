@@ -21,6 +21,9 @@ export type RobotSnapshot = {
   latestTelemetry: RobotTelemetry;
 };
 
+// Note: What the robot detail endpoint sends. The developer controls also need to know whether reporting is broken
+export type RobotDetails = RobotSnapshot & { isReportingBroken: boolean };
+
 // Note: Developer override of a simulated robot. observedAt is left out on purpose, it only moves with real reports
 export type RobotOverride = Partial<
   Pick<RobotTelemetry, "operationalState" | "batteryPercent">

@@ -1,8 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { HttpError } from "@/lib/client/http-error";
-import type { RobotId, RobotSnapshot } from "@/lib/types/robot";
-
-export type RobotDetails = RobotSnapshot & { isReportingBroken: boolean };
+import type { RobotDetails, RobotId } from "@/lib/types/robot";
 
 export const fetchRobot = async (id: RobotId): Promise<RobotDetails> => {
   const result = await fetch(`/api/robots/${id}`);
