@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { HttpError } from "@/lib/client/http-error";
+import type { RobotResponse } from "@/lib/types/api";
 import type { RobotDetails, RobotId, RobotOverride } from "@/lib/types/robot";
 
 const sendRobotOverride = async (
@@ -17,7 +18,8 @@ const sendRobotOverride = async (
       result.status,
     );
   }
-  return (await result.json()) as RobotDetails;
+  const { robot } = (await result.json()) as RobotResponse;
+  return robot;
 };
 
 export const useRobotOverride = (id: RobotId) => {

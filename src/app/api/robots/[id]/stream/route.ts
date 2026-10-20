@@ -1,5 +1,7 @@
+import { NextResponse } from "next/server";
 import { STREAM_CHECK_INTERVAL_MS } from "@/lib/server/config";
 import { getRobotById } from "@/lib/server/fleet-simulation-repository";
+import type { ErrorResponse } from "@/lib/types/api";
 
 export const dynamic = "force-dynamic"; // Note: This needs to be evaluated on every request
 
@@ -11,7 +13,10 @@ export async function GET(
 ) {
   const { id } = await params;
   if (!getRobotById(id)) {
-    return Response.json({ error: "Robot not found" }, { status: 404 });
+    return NextResponse.json<ErrorResponse>(
+      { error: "Robot not found" },
+      { status: 404 },
+    );
   }
 
   let timer: ReturnType<typeof setInterval> | undefined;

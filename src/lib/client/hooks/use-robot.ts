@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { HttpError } from "@/lib/client/http-error";
+import type { RobotResponse } from "@/lib/types/api";
 import type { RobotDetails, RobotId } from "@/lib/types/robot";
 
 export const fetchRobot = async (id: RobotId): Promise<RobotDetails> => {
@@ -10,7 +11,8 @@ export const fetchRobot = async (id: RobotId): Promise<RobotDetails> => {
       result.status,
     );
   }
-  return (await result.json()) as RobotDetails;
+  const { robot } = (await result.json()) as RobotResponse;
+  return robot;
 };
 
 export const useRobot = (id: RobotId) => {
