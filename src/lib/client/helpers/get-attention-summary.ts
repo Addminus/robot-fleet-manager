@@ -1,5 +1,5 @@
 import { getRobotHealth } from "@/lib/client/helpers/get-robot-health";
-import type { SimulatedRobot } from "@/lib/types/robot";
+import type { RobotSnapshot } from "@/lib/types/robot";
 
 export type AttentionCounts = {
   total: number;
@@ -9,12 +9,12 @@ export type AttentionCounts = {
 };
 
 export function getAttentionSummary(
-  fleet: SimulatedRobot[],
+  fleet: RobotSnapshot[],
   now: number,
 ): AttentionCounts {
   const summary = { error: 0, flat: 0, lost: 0 };
-  for (const { telemetry } of fleet) {
-    const health = getRobotHealth(telemetry, now);
+  for (const { latestTelemetry } of fleet) {
+    const health = getRobotHealth(latestTelemetry, now);
     if (health.status === "needs-attention") summary[health.reason] += 1;
   }
 

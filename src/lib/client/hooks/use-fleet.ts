@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { HttpError } from "@/lib/client/http-error";
-import type { SimulatedRobot } from "@/lib/types/robot";
+import type { RobotSnapshot } from "@/lib/types/robot";
 
 const FLEET_POLL_INTERVAL_MS = 10_000;
 
-export const fetchFleet = async (): Promise<SimulatedRobot[]> => {
+export const fetchFleet = async (): Promise<RobotSnapshot[]> => {
   const result = await fetch("/api/robots");
   // Note: fetch only rejects on network failures, so HTTP errors have to be thrown manually for the query to fail
   if (!result.ok) {
@@ -14,7 +14,7 @@ export const fetchFleet = async (): Promise<SimulatedRobot[]> => {
     );
   }
   const parsedResponse = (await result.json()) as {
-    fleet: SimulatedRobot[];
+    fleet: RobotSnapshot[];
   };
   return parsedResponse.fleet;
 };

@@ -28,7 +28,7 @@ export const RobotContainer = ({ id }: RobotContainerProps) => {
   if (robotRequestIsPending || !robot) return <RobotLoading />;
 
   // Note: The initial request provides a snapshot until the stream delivers its first report
-  const telemetry = liveTelemetry ?? robot.telemetry;
+  const telemetry = liveTelemetry ?? robot.latestTelemetry;
   const lastUpdate = formatLastSeen(now - telemetry.observedAt);
   const jobStatus = getJobStatus(telemetry, now);
   const health = getRobotHealth(telemetry, now);

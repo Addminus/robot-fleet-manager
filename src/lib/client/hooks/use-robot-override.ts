@@ -1,11 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
+import type { RobotDetails } from "@/lib/client/hooks/use-robot";
 import { HttpError } from "@/lib/client/http-error";
-import type { RobotId, RobotOverride, SimulatedRobot } from "@/lib/types/robot";
+import type { RobotId, RobotOverride } from "@/lib/types/robot";
 
 const sendRobotOverride = async (
   id: RobotId,
   override: RobotOverride,
-): Promise<SimulatedRobot> => {
+): Promise<RobotDetails> => {
   const result = await fetch(`/api/robots/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
@@ -17,8 +18,7 @@ const sendRobotOverride = async (
       result.status,
     );
   }
-  const parsedResponse = (await result.json()) as { robot: SimulatedRobot };
-  return parsedResponse.robot;
+  return (await result.json()) as RobotDetails;
 };
 
 export const useRobotOverride = (id: RobotId) => {

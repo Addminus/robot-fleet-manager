@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { formatLastSeen } from "@/lib/client/format-last-seen";
-import type { SimulatedRobot } from "@/lib/types/robot";
+import type { RobotSnapshot } from "@/lib/types/robot";
 
 type FleetTableProps = {
-  robots: SimulatedRobot[];
+  robots: RobotSnapshot[];
   now: number;
 };
 
@@ -23,7 +23,7 @@ export const FleetTable = ({ robots, now }: FleetTableProps) => {
         </tr>
       </thead>
       <tbody>
-        {robots.map(({ robot, telemetry }) => (
+        {robots.map(({ robot, latestTelemetry: telemetry }) => (
           // Note: The link's ::after overlay stretches over the whole row, since <a> can not wrap a <tr>
           <tr
             key={robot.id}

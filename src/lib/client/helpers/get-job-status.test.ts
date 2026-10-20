@@ -7,7 +7,7 @@ import { getJobStatus } from "@/lib/client/helpers/get-job-status";
 
 describe("getJobStatus", () => {
   it("warns that a charge is coming when a working robot runs low", () => {
-    const { telemetry } = makeRobot(1, { batteryPercent: 25 });
+    const { latestTelemetry: telemetry } = makeRobot(1, { batteryPercent: 25 });
 
     expect(getJobStatus(telemetry, now)).toEqual({
       working: "active",
@@ -17,7 +17,9 @@ describe("getJobStatus", () => {
   });
 
   it("pauses the work job while charging", () => {
-    const { telemetry } = makeRobot(1, { operationalState: "charging" });
+    const { latestTelemetry: telemetry } = makeRobot(1, {
+      operationalState: "charging",
+    });
 
     expect(getJobStatus(telemetry, now)).toMatchObject({
       working: "paused",
@@ -26,7 +28,7 @@ describe("getJobStatus", () => {
   });
 
   it("disables both jobs when the robot needs attention, even if it last reported working", () => {
-    const { telemetry } = makeRobot(1, { batteryPercent: 0 });
+    const { latestTelemetry: telemetry } = makeRobot(1, { batteryPercent: 0 });
 
     expect(getJobStatus(telemetry, now)).toEqual({
       working: "disabled",
