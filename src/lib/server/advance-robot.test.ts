@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { advanceRobot } from "@/lib/server/advance-robot";
-import type { RobotTelemetry, SimulatedRobot } from "@/lib/types/robot";
+import type { SimulatedRobot } from "@/lib/server/simulated-robot";
+import type { RobotTelemetry } from "@/lib/types/robot";
 
 const makeSimulatedRobot = (
   telemetry: Partial<RobotTelemetry>,

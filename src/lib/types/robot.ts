@@ -15,16 +15,11 @@ export interface RobotTelemetry {
   operationalState: OperationalState;
 }
 
-// Helper type to be able to store current state of robot
-export interface SimulatedRobot {
-  robot: Robot;
-  telemetry: RobotTelemetry;
-  batteryDrainPerSecond: number;
-  workDurationInMilliseconds: number;
-  idleDurationInMilliseconds: number;
-  stateEndsAt: number | null; // Note: null while charging or in error, as those have no fixed end
-  isReportingBroken: boolean; // Note: Developer control. The robot keeps running but sends no reports
-}
+// Note: What the API sends per robot. The simulation state stays on the server
+export type RobotSnapshot = Robot & { latestTelemetry: RobotTelemetry };
+
+// Note: What the robot detail endpoint sends. The developer controls also need to know whether reporting is broken
+export type RobotDetails = RobotSnapshot & { isReportingBroken: boolean };
 
 // Note: Developer override of a simulated robot. observedAt is left out on purpose, it only moves with real reports
 export type RobotOverride = Partial<

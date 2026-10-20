@@ -6,16 +6,16 @@ import { FleetTable } from "@/components/fleet/fleet-table";
 import type { AttentionCounts } from "@/lib/client/helpers/get-attention-summary";
 import type { RobotStatusCounts } from "@/lib/client/helpers/get-fleet-composition";
 import type { RobotNeedingAttention } from "@/lib/client/helpers/get-robots-needing-attention";
-import type { SimulatedRobot } from "@/lib/types/robot";
+import type { RobotSnapshot } from "@/lib/types/robot";
 
 type FleetViewProps = {
-  fleet: SimulatedRobot[];
+  fleet: RobotSnapshot[];
   now: number;
   refreshFailed: boolean;
   attentionSummary: AttentionCounts;
   composition: RobotStatusCounts;
   robotsNeedingAttention: RobotNeedingAttention[];
-  robotsByLastSeen: SimulatedRobot[];
+  robotsByLastSeen: RobotSnapshot[];
 };
 
 export const FleetView = ({

@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { HttpError } from "@/lib/client/http-error";
-import type { RobotId, SimulatedRobot } from "@/lib/types/robot";
+import type { RobotResponse } from "@/lib/types/api";
+import type { RobotDetails, RobotId } from "@/lib/types/robot";
 
-export const fetchRobot = async (id: RobotId): Promise<SimulatedRobot> => {
+export const fetchRobot = async (id: RobotId): Promise<RobotDetails> => {
   const result = await fetch(`/api/robots/${id}`);
   if (!result.ok) {
     throw new HttpError(
@@ -10,10 +11,8 @@ export const fetchRobot = async (id: RobotId): Promise<SimulatedRobot> => {
       result.status,
     );
   }
-  const parsedResponse = (await result.json()) as {
-    robot: SimulatedRobot;
-  };
-  return parsedResponse.robot;
+  const { robot } = (await result.json()) as RobotResponse;
+  return robot;
 };
 
 export const useRobot = (id: RobotId) => {

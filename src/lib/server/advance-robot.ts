@@ -1,4 +1,5 @@
-import type { OperationalState, SimulatedRobot } from "@/lib/types/robot";
+import type { SimulatedRobot } from "@/lib/server/simulated-robot";
+import type { OperationalState } from "@/lib/types/robot";
 
 const CHARGE_PERCENT_PER_SECOND = 2.5;
 const CHARGE_THRESHOLD_PERCENT = 20;

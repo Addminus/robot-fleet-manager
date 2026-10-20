@@ -33,7 +33,7 @@ export const AttentionTable = ({ robots, now }: AttentionTableProps) => {
         </tr>
       </thead>
       <tbody>
-        {robots.map(({ robot: { robot, telemetry }, reason }) => (
+        {robots.map(({ robot, reason }) => (
           // Note: The link's ::after overlay stretches over the whole row, since <a> can not wrap a <tr>
           <tr
             key={robot.id}
@@ -51,13 +51,13 @@ export const AttentionTable = ({ robots, now }: AttentionTableProps) => {
               </Link>
             </td>
             <td className="py-2 capitalize text-zinc-500">
-              {telemetry.operationalState}
+              {robot.latestTelemetry.operationalState}
             </td>
             <td className="py-2 text-right tabular-nums">
-              {Math.round(telemetry.batteryPercent)}%
+              {Math.round(robot.latestTelemetry.batteryPercent)}%
             </td>
             <td className="py-2 text-right font-mono text-xs text-zinc-500">
-              {formatLastSeen(now - telemetry.observedAt)}
+              {formatLastSeen(now - robot.latestTelemetry.observedAt)}
             </td>
           </tr>
         ))}

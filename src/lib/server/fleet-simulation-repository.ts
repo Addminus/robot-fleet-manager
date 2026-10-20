@@ -1,7 +1,8 @@
 import { advanceRobot, enterState } from "@/lib/server/advance-robot";
 import { createInitialFleet } from "@/lib/server/robot-factory";
+import type { SimulatedRobot } from "@/lib/server/simulated-robot";
 import { vendorProfilesById } from "@/lib/server/vendor-profiles";
-import type { RobotOverride, SimulatedRobot } from "@/lib/types/robot";
+import type { RobotOverride, RobotSnapshot } from "@/lib/types/robot";
 
 const createFleetSimulation = () => {
   const fleet = createInitialFleet(Date.now());
@@ -27,6 +28,12 @@ const advanceToNow = (simulated: SimulatedRobot, now: number) => {
   if (!vendor) return;
   advanceRobot(simulated, vendor.updateIntervalInMilliseconds, now);
 };
+
+// Note: Strips the simulation state
+export const toRobotSnapshot = ({
+  robot,
+  telemetry,
+}: SimulatedRobot): RobotSnapshot => ({ ...robot, latestTelemetry: telemetry });
 
 export function getFleet() {
   const { fleet } = getFleetSimulation();

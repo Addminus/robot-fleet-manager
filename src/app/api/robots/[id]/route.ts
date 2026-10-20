@@ -1,8 +1,16 @@
+import { NextResponse } from "next/server";
 import {
   getRobotById,
   overrideRobot,
+  toRobotSnapshot,
 } from "@/lib/server/fleet-simulation-repository";
-import type { OperationalState, RobotOverride } from "@/lib/types/robot";
+import type { SimulatedRobot } from "@/lib/server/simulated-robot";
+import type { ErrorResponse, RobotResponse } from "@/lib/types/api";
+import type {
+  OperationalState,
+  RobotDetails,
+  RobotOverride,
+} from "@/lib/types/robot";
 
 export const dynamic = "force-dynamic"; // Note: This needs to be evaluated on every request
 
@@ -11,12 +19,15 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
-  const robot = getRobotById(id);
-  if (!robot) {
-    return Response.json({ error: "Robot not found" }, { status: 404 });
+  const simulated = getRobotById(id);
+  if (!simulated) {
+    return NextResponse.json<ErrorResponse>(
+      { error: "Robot not found" },
+      { status: 404 },
+    );
   }
-  return Response.json({
-    robot,
+  return NextResponse.json<RobotResponse>({
+    robot: toRobotDetails(simulated),
   });
 }
 
@@ -30,16 +41,28 @@ export async function PATCH(
   // Note: Invalid JSON becomes undefined and fails the guard below
   const override: unknown = await request.json().catch(() => undefined);
   if (!isRobotOverride(override)) {
-    return Response.json({ error: "Invalid override" }, { status: 400 });
+    return NextResponse.json<ErrorResponse>(
+      { error: "Invalid override" },
+      { status: 400 },
+    );
   }
-  const robot = overrideRobot(id, override);
-  if (!robot) {
-    return Response.json({ error: "Robot not found" }, { status: 404 });
+  const simulated = overrideRobot(id, override);
+  if (!simulated) {
+    return NextResponse.json<ErrorResponse>(
+      { error: "Robot not found" },
+      { status: 404 },
+    );
   }
-  return Response.json({
-    robot,
+  return NextResponse.json<RobotResponse>({
+    robot: toRobotDetails(simulated),
   });
 }
+
+// Note: The detail page also needs the developer control flag, the rest of the simulation state stays on the server
+const toRobotDetails = (simulated: SimulatedRobot): RobotDetails => ({
+  ...toRobotSnapshot(simulated),
+  isReportingBroken: simulated.isReportingBroken,
+});
 
 const operationalStates: unknown[] = [
   "idle",

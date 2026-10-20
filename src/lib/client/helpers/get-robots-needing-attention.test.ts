@@ -17,7 +17,7 @@ describe("getRobotsNeedingAttention", () => {
 
     expect(
       getRobotsNeedingAttention(fleet, now).map(({ robot, reason }) => [
-        robot.robot.id,
+        robot.id,
         reason,
       ]),
     ).toEqual([

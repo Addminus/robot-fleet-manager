@@ -1,10 +1,14 @@
-import { getFleet } from "@/lib/server/fleet-simulation-repository";
+import { NextResponse } from "next/server";
+import {
+  getFleet,
+  toRobotSnapshot,
+} from "@/lib/server/fleet-simulation-repository";
+import type { FleetResponse } from "@/lib/types/api";
 
 export const dynamic = "force-dynamic"; // Note: This needs to be evaluated on every request
 
 export async function GET() {
-  const fleet = getFleet();
-  return Response.json({
-    fleet,
+  return NextResponse.json<FleetResponse>({
+    fleet: getFleet().map(toRobotSnapshot),
   });
 }

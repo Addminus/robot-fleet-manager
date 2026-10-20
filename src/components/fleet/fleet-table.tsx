@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { formatLastSeen } from "@/lib/client/format-last-seen";
-import type { SimulatedRobot } from "@/lib/types/robot";
+import type { RobotSnapshot } from "@/lib/types/robot";
 
 type FleetTableProps = {
-  robots: SimulatedRobot[];
+  robots: RobotSnapshot[];
   now: number;
 };
 
@@ -23,14 +23,14 @@ export const FleetTable = ({ robots, now }: FleetTableProps) => {
         </tr>
       </thead>
       <tbody>
-        {robots.map(({ robot, telemetry }) => (
+        {robots.map((robot) => (
           // Note: The link's ::after overlay stretches over the whole row, since <a> can not wrap a <tr>
           <tr
             key={robot.id}
             className="relative border-b border-zinc-100 last:border-0 hover:bg-zinc-50"
           >
             <td className="py-2 capitalize text-zinc-500">
-              {telemetry.operationalState}
+              {robot.latestTelemetry.operationalState}
             </td>
             <td className="py-2">
               <Link
@@ -41,10 +41,10 @@ export const FleetTable = ({ robots, now }: FleetTableProps) => {
               </Link>
             </td>
             <td className="py-2 text-right tabular-nums">
-              {Math.round(telemetry.batteryPercent)}%
+              {Math.round(robot.latestTelemetry.batteryPercent)}%
             </td>
             <td className="py-2 text-right font-mono text-xs text-zinc-500">
-              {formatLastSeen(now - telemetry.observedAt)}
+              {formatLastSeen(now - robot.latestTelemetry.observedAt)}
             </td>
           </tr>
         ))}

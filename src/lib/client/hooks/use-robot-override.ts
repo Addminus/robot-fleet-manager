@@ -1,11 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import { HttpError } from "@/lib/client/http-error";
-import type { RobotId, RobotOverride, SimulatedRobot } from "@/lib/types/robot";
+import type { RobotResponse } from "@/lib/types/api";
+import type { RobotDetails, RobotId, RobotOverride } from "@/lib/types/robot";
 
 const sendRobotOverride = async (
   id: RobotId,
   override: RobotOverride,
-): Promise<SimulatedRobot> => {
+): Promise<RobotDetails> => {
   const result = await fetch(`/api/robots/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
@@ -17,12 +18,17 @@ const sendRobotOverride = async (
       result.status,
     );
   }
-  const parsedResponse = (await result.json()) as { robot: SimulatedRobot };
-  return parsedResponse.robot;
+  const { robot } = (await result.json()) as RobotResponse;
+  return robot;
 };
 
 export const useRobotOverride = (id: RobotId) => {
-  const { mutate, data, isPending, isError } = useMutation({
+  const {
+    mutate,
+    data: robot,
+    isPending,
+    isError,
+  } = useMutation({
     mutationFn: (override: RobotOverride) => sendRobotOverride(id, override),
   });
 
@@ -31,7 +37,7 @@ export const useRobotOverride = (id: RobotId) => {
     // Note: Telemetry is left out on purpose. It holds values the robot has not reported yet, the stream delivers them with the next report.
     // The id check ignores a result left over from a previously viewed robot
     overriddenIsReportingBroken:
-      data?.robot.id === id ? data.isReportingBroken : undefined,
+      robot?.id === id ? robot.isReportingBroken : undefined,
     overrideIsPending: isPending,
     overrideFailed: isError,
   };
